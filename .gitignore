@@ -1,0 +1,17 @@
+# Node.js
+node_modules/
+dist/
+.env
+*.log
+*.tsbuildinfo
+
+# React/Vite
+client/node_modules/
+client/dist/
+client/.env
+
+# Editor and system
+.vscode/
+.DS_Store
+.idea/
+.gitattributes
