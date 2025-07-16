@@ -7,6 +7,7 @@ import { CreditAccount } from '../models/pg/CreditAccount'
 
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret_key'
+const JWT_EXPIRES_IN = '15m'
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -50,7 +51,11 @@ export const login = async (req: Request, res: Response) => {
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' })
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' })
+    const token = jwt.sign(
+      { id: user._id, version: user.tokenVersion },
+      JWT_SECRET,
+      { expiresIn: '15m' }
+    )
 
     res.status(200).json({
       user: {
@@ -67,4 +72,20 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (_: Request, res: Response) => {
   res.status(200).json({ msg: 'Logged out (handled on client)' })
+}
+
+export const refreshToken = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body
+    if (!token) return res.status(400).json({ message: 'Token missing' })
+
+    const decoded = jwt.verify(token, JWT_SECRET) as { id: string }
+    const newToken = jwt.sign({ id: decoded.id }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN,
+    })
+
+    return res.json({ token: newToken })
+  } catch (err) {
+    return res.status(403).json({ message: 'Invalid or expired token' })
+  }
 }

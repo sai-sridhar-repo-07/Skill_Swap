@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { CreditAccount } from '../models/pg/CreditAccount'
+import { CreditTransaction } from '../models/pg/CreditTransaction';
 
 export const AppDataSource = new DataSource({
   type: 'postgres', // Must explicitly specify
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
     rejectUnauthorized: false // Critical for Supabase
   },
   logging: ['error'],// Enable logs
-  entities: [CreditAccount]
+  entities: [CreditAccount,CreditTransaction]
 });
 
 // Add connection test

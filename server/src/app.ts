@@ -5,6 +5,8 @@ import authRoutes from './routes/auth.routes'
 import userRoutes from './routes/user.routes'
 import { connectMongo } from './db/mongo'
 import { connectPostgres } from './db/postgres'
+import creditRoutes from './routes/credit.routes'
+import sessionRoutes from './routes/session.routes'
 
 const app = express()
 
@@ -21,8 +23,10 @@ dotenv.config()
 
 app.use(cors())
 app.use(express.json())
-
+ 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/credits', creditRoutes)
+app.use('/api/sessions', sessionRoutes)
 
 export default app

@@ -3,6 +3,7 @@ import { connectMongo } from './db/mongo'
 import { connectPostgres } from './db/postgres'
 
 const app = express()
+app.use(express.json())
 
 // Connect databases
 connectMongo()
