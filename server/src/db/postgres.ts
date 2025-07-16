@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-// import { CreditTransaction } from '../entities/CreditTransaction';
+import { CreditAccount } from '../models/pg/CreditAccount'
 
 export const AppDataSource = new DataSource({
   type: 'postgres', // Must explicitly specify
@@ -8,12 +8,12 @@ export const AppDataSource = new DataSource({
   username: process.env.PG_USER || 'postgres',
   password: process.env.PG_PASSWORD || '6309816942', // Required
   database: process.env.PG_DB || 'postgres',
-  // entities: [CreditTransaction],
   synchronize: true, // Disable in production
   ssl: { 
     rejectUnauthorized: false // Critical for Supabase
   },
-  logging: ['error'] // Enable logs
+  logging: ['error'],// Enable logs
+  entities: [CreditAccount]
 });
 
 // Add connection test
