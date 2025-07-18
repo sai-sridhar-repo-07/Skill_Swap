@@ -1,3 +1,5 @@
+// src/components/Navbar.tsx
+
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/index';
 import { logout } from '../store/slices/authSlice';
@@ -15,16 +17,18 @@ const Navbar = () => {
     { name: 'Explore Skills', path: '/explore' },
     { name: 'Offer Session', path: '/offer' },
     { name: 'My Sessions', path: '/sessions' },
-    { name: 'Dashboard', path: '/Dashboard' },
+    { name: 'Dashboard', path: '/dashboard' },
   ];
 
   return (
-    <nav className="bg-white border-b shadow-md sticky top-0 z-50">
+    <nav className="bg-gradient-to-r from-indigo-50 via-sky-50 to-pink-50 shadow-md border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-indigo-600 tracking-tight">
           SkillSwap
         </Link>
 
+        {/* Hamburger Menu (Mobile) */}
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -35,7 +39,12 @@ const Navbar = () => {
           </button>
         </div>
 
-        <div className={`md:flex items-center gap-6 ${isOpen ? 'block' : 'hidden'} md:block`}>
+        {/* Navigation Links */}
+        <div
+          className={`md:flex items-center gap-6 transition-all duration-300 ${
+            isOpen ? 'block mt-4' : 'hidden'
+          } md:block`}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -50,15 +59,15 @@ const Navbar = () => {
           {user ? (
             <Link
               to="/profile"
-              className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition"
+              className="flex items-center gap-2 bg-white/70 hover:bg-white text-gray-800 px-4 py-2 rounded-md shadow-sm border transition"
             >
-              <User className="w-5 h-5" />
-              {user.name.split(' ')[0]}
+              <User className="w-5 h-5 text-indigo-600" />
+              <span className="font-medium">{user.name.split(' ')[0]}</span>
             </Link>
           ) : (
             <Link
               to="/signin"
-              className="mt-3 md:mt-0 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition"
+              className="mt-3 md:mt-0 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium shadow transition"
             >
               Login
             </Link>

@@ -13,6 +13,8 @@ import Footer from './components/Footer';
 import SignIn from './pages/SignIn';
 
 import './styles/index.css';
+import ExploreSkills from './pages/ExploreSkills';
+import OfferSession from './pages/OfferSession';
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,6 +37,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/explore" element={<ExploreSkills />} />
+          <Route path="/offer" element={<OfferSession />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
