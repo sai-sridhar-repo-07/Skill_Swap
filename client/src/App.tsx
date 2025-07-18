@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.tsx
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { fetchMe } from './store/slices/authSlice';
+import { RootState, AppDispatch } from './store';
 
-function App() {
-  const [count, setCount] = useState(0)
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import Signup from './pages/Signup';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import SignIn from './pages/SignIn';
+
+import './styles/index.css';
+
+const App = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const token = useSelector((state: RootState) => state.auth.token);
+  const location = useLocation();
+
+  const hideLayout = ['/signin', '/signup'].includes(location.pathname);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchMe());
+    }
+  }, [dispatch, token]);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Navbar />
+       <div className="">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {!hideLayout && <Footer />}
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
